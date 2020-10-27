@@ -15,11 +15,13 @@ include_directories(
 
 # Library sources.
 set(LIBRARY_SOURCES
-	src/foo.cc
+	src/insect.cc
+	src/ant.cc
+	src/cell_mock.cc
 )
 
 # Library creation.
-add_library(foo ${LIBRARY_SOURCES})
+add_library(simulation ${LIBRARY_SOURCES})
 
 # Application sources.
 set(APP_SOURCES
@@ -28,7 +30,7 @@ set(APP_SOURCES
 
 # Application creation and linkeage to libraries.
 add_executable(cpp_course ${APP_SOURCES})
-target_link_libraries(cpp_course foo)
+target_link_libraries(cpp_course simulation)
 
 # Includes GTest.
 enable_testing()
