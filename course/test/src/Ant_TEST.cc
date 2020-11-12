@@ -22,8 +22,8 @@ GTEST_TEST(AntTest, OccupiedCellOnInitialization) {
 GTEST_TEST(AntTest, CallbackAssignedCorrectly) {
   std::shared_ptr<Cell> cell(new Cell());
   Ant ant = Ant(cell);
-  bool lambda_called = false;
-  auto callback = [&](InsectCallbackMetrics& metrics) {
+  bool lambda_called{false};
+  auto callback = [&lambda_called](InsectCallbackMetrics& metrics) {
         lambda_called = true;
   };
   ant.SetRoundResultsCallback(callback);
@@ -35,34 +35,34 @@ GTEST_TEST(AntTest, CallbackAssignedCorrectly) {
 GTEST_TEST(AntTest, IsAliveOnInit) {
   std::shared_ptr<Cell> cell(new Cell());
   Ant ant = Ant(cell);
-  InsectCallbackMetrics test_metrics;
-  auto callback = [&](InsectCallbackMetrics& metrics) {
+  bool is_dead{false};
+  auto callback = [&is_dead](InsectCallbackMetrics& metrics) {
         if (metrics.IsDead()) {
-          test_metrics.SetDead();
+          is_dead = true;
         }
   };
 
   ant.SetRoundResultsCallback(callback);
   ant.RunRound();
-  EXPECT_FALSE(test_metrics.IsDead());
+  EXPECT_FALSE(is_dead);
 }
 
 GTEST_TEST(AntTest, IsDeadWhenToldToDie) {
   std::shared_ptr<Cell> cell(new Cell());
   Ant ant = Ant(cell);
-  InsectCallbackMetrics test_metrics;
-  auto callback = [&](InsectCallbackMetrics& metrics) {
+  bool is_dead{false};
+  auto callback = [&is_dead](InsectCallbackMetrics& metrics) {
         if (metrics.IsDead()) {
-          test_metrics.SetDead();
+          is_dead = true;
         }
   };
 
   ant.SetRoundResultsCallback(callback);
   ant.RunRound();
-  EXPECT_FALSE(test_metrics.IsDead());
+  EXPECT_FALSE(is_dead);
   ant.Die();
   ant.RunRound();
-  EXPECT_TRUE(test_metrics.IsDead());
+  EXPECT_TRUE(is_dead);
 }
 
 GTEST_TEST(AntTest, AntMovedToOtherCell) {
@@ -70,13 +70,12 @@ GTEST_TEST(AntTest, AntMovedToOtherCell) {
   SurroundingCells surr({free_cell, free_cell, free_cell, free_cell});
   std::shared_ptr<Cell> center_cell(new Cell());
   center_cell->SetSurroundingCells(surr);
-  std::shared_ptr<Cell> center_cell_ptr2 = center_cell;
-  Ant moving_ant(center_cell_ptr2);
+  Ant moving_ant(center_cell);
 
   moving_ant.RunRound();
 
-  EXPECT_TRUE(center_cell->IsFree());
   EXPECT_FALSE(free_cell->IsFree());
+  EXPECT_TRUE(center_cell->IsFree());
 }
 
 GTEST_TEST(AntTest, AntDidntMoveWhenCantMove) {
@@ -88,34 +87,32 @@ GTEST_TEST(AntTest, AntDidntMoveWhenCantMove) {
   surrounded_cell->SetSurroundingCells(surr);
   Ant surrounded_ant(surrounded_cell);
 
-  surrounded_ant.RunRound();
-  occupied_cell->Free();
-
-  EXPECT_FALSE(surrounded_cell->IsFree());
-  EXPECT_TRUE(occupied_cell->IsFree());
+  EXPECT_EQ(surrounded_ant.GetCell().get(), surrounded_cell.get());
 }
 
-GTEST_TEST(DISABLED_AntTest, BreedAfter3RoundsNotBefore) {
+GTEST_TEST(AntTest, BreedAfter3RoundsNotBefore) {
   std::shared_ptr<Cell> free_cell(new Cell());
   // We must provide a cell where the ant can breed.
   SurroundingCells surr({free_cell, free_cell, free_cell, free_cell});
   std::shared_ptr<Cell> cell(new Cell());
+  SurroundingCells surr_free({cell, cell, cell, cell});
   cell->SetSurroundingCells(surr);
+  free_cell->SetSurroundingCells(surr_free);
   Ant ant(cell);
-  InsectCallbackMetrics test_metrics;
-  auto callback = [&](InsectCallbackMetrics& metrics) {
-        if (metrics.IsDead()) {
-          test_metrics.SetDead();
+  bool has_bred{false};
+  auto callback = [&has_bred](InsectCallbackMetrics& metrics) {
+        if (metrics.HasBred()) {
+          has_bred = true;
         }
   };
   ant.SetRoundResultsCallback(callback);
 
   ant.RunRound();
-  EXPECT_FALSE(test_metrics.HasBred());
+  EXPECT_FALSE(has_bred);
   ant.RunRound();
-  EXPECT_FALSE(test_metrics.HasBred());
+  EXPECT_FALSE(has_bred);
   ant.RunRound();
-  EXPECT_TRUE(test_metrics.HasBred());
+  EXPECT_TRUE(has_bred);
 }
 }  // namespace
 }  // namespace test

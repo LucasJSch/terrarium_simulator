@@ -1,5 +1,5 @@
 #ifndef ANT_H
-#define	ANT_H
+#define ANT_H
 #include <cstdint>
 #include <memory>
 
@@ -8,20 +8,20 @@
 namespace ekumen {
 namespace simulation {
 namespace {
-    constexpr int kRequiredRoundsUntilBreed = 3;
+    constexpr int kRequiredRoundsUntilBreed = 2;
 }  // namespace
 
 class Ant : public Insect {
     public:
-        Ant(std::shared_ptr<Cell>& cell);
+        Ant(const std::shared_ptr<Cell>& cell);
         void RunRound();
+        InsectType GetInsectType();
 
     protected:
-        InsectType GetInsectType();
         uint32_t GetRequiredRoundsToBreed();
         // Creates a shared_ptr to a new instance of an ant.
         // Used by Breed().
-        std::shared_ptr<Insect> GetNewborn(std::shared_ptr<Cell>& cell);
+        std::shared_ptr<Insect> GetNewborn(const std::shared_ptr<Cell>& cell);
         std::shared_ptr<Cell> WhereCanIEat();
         std::shared_ptr<Insect> GetThisPtr();
 };
