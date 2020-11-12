@@ -1,3 +1,4 @@
+#include <iostream>
 #include <vector>
 
 #include "cell_mock.h"
@@ -8,19 +9,16 @@ namespace ekumen {
 namespace simulation {
 
 void Cell::Free() {
-    occupied = true;
+    isFree = true;
 }
 
-void Cell::Occupy(std::shared_ptr<Insect>&& insect) {
-    this->insect = std::move(insect);
-}
-
-void Cell::Occupy(std::shared_ptr<Insect>& insect) {
+void Cell::Occupy(const std::shared_ptr<Insect>& insect) {
     this->insect = insect;
+    isFree = false;
 }
 
 bool Cell::IsFree() {
-    return occupied;
+    return isFree;
 }
 
 void Cell::SetSurroundingCells(SurroundingCells& surr) {
@@ -37,20 +35,16 @@ SurroundingCells Cell::GetSurroundingCells() {
     return surrounding_cells;
 }
 
-SurroundingCells::SurroundingCells(std::vector<std::shared_ptr<Cell>>& cells) {
-    for (std::shared_ptr<Cell>& cell_ptr : cells) {
+SurroundingCells::SurroundingCells(const std::vector<std::shared_ptr<Cell>>& cells) {
+    for (const std::shared_ptr<Cell>& cell_ptr : cells) {
         this->cells.push_back(cell_ptr);
     }
-}
-
-SurroundingCells::SurroundingCells(std::vector<std::shared_ptr<Cell>>&& cells) {
-    this->cells = std::move(cells);
 }
 
 std::vector<std::shared_ptr<Cell>> SurroundingCells::GetFreeCells() {
     std::vector<std::shared_ptr<Cell>> vector;
     for (std::shared_ptr<Cell>& cell : cells) {
-        if ((cell != nullptr) && (cell->IsFree())) {
+        if ((cell) && (cell->IsFree())) {
             vector.push_back(cell);
         }
     }
@@ -66,5 +60,10 @@ std::vector<std::shared_ptr<Cell>> SurroundingCells::GetOccupiedCells() {
     }
     return vector;
 }
+
+std::shared_ptr<Insect> Cell::GetInsect() {
+    return insect;
+}
+
 }  // namespace ekumen
 }  // namespace simulation

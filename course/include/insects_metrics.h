@@ -22,8 +22,8 @@ class InsectsRoundMetrics {
         uint32_t GetNewbornCount() const {return n_newborns;}
 
     private:
-        uint32_t n_dead = 0;
-        uint32_t n_newborns = 0;
+        uint32_t n_dead{0};
+        uint32_t n_newborns{0};
 };
 
 // This class will be used as the return type of the callback when an insect
@@ -31,7 +31,7 @@ class InsectsRoundMetrics {
 class InsectCallbackMetrics {
     public:
         void SetDead() {died = true;}
-        void SetNewborn(std::shared_ptr<Insect>& newborn) {this->newborn = newborn;}
+        void SetNewborn(const std::shared_ptr<Insect>& newborn) {this->newborn = newborn;}
         void SetInsectType(InsectType type) {this->type = type;}
         bool IsDead() const {return died;}
         bool HasBred() const {return newborn != nullptr;}
@@ -39,7 +39,7 @@ class InsectCallbackMetrics {
         std::shared_ptr<Insect> GetNewborn() const {return newborn;}
 
     private:
-        bool died = false;
+        bool died{false};
         std::shared_ptr<Insect> newborn = nullptr;
         InsectType type;
 };

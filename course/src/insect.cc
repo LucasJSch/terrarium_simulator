@@ -24,7 +24,7 @@ void Insect::Breed() {
         return;
     }
     std::shared_ptr<Cell> free_cell = WhereCanIBreed();
-    if (free_cell == nullptr) {
+    if (!free_cell) {
         return;
     }
     std::shared_ptr<Insect> newborn = GetNewborn(free_cell);
@@ -35,17 +35,17 @@ void Insect::Breed() {
 
 void Insect::Move() {
     std::shared_ptr<Cell> free_cell = WhereCanIMove();
-    if (free_cell == nullptr) {
+    if (!free_cell) {
         return;
     }
+    free_cell->Occupy(cell->GetInsect());
     cell->Free();
-    free_cell->Occupy(GetThisPtr());
     cell = free_cell;
 }
 
 void Insect::Eat() {
     std::shared_ptr<Cell> free_cell = WhereCanIEat();
-    if (free_cell == nullptr) {
+    if (!free_cell) {
         return;
     }
     // TODO: implement.
@@ -65,7 +65,7 @@ bool Insect::CanBreed() {
 }
 
 bool Insect::IsDead() {
-    return is_dead == true;
+    return is_dead;
 }
 
 void Insect::UpdateBreedingState() {
@@ -92,6 +92,11 @@ std::shared_ptr<Cell> Insect::WhereCanIBreed() {
 std::shared_ptr<Cell> Insect::WhereCanIEat() {
     return nullptr;
 }
+
+std::shared_ptr<Cell> Insect::GetCell() {
+    return cell;
+}
+
 
 }  // namespace simulation
 }  // namespace ekumen

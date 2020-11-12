@@ -21,6 +21,7 @@ class Insect {
         virtual void RunRound() = 0;
         void Die();
         void SetRoundResultsCallback(std::function<void(InsectCallbackMetrics&)> callback);
+        std::shared_ptr<Cell> GetCell();
 
     protected:
         // Making these virtual allows to easily change the insect behaviour if
@@ -37,13 +38,13 @@ class Insect {
         virtual std::shared_ptr<Cell> WhereCanIMove();
         virtual std::shared_ptr<Cell> WhereCanIBreed();
         virtual std::shared_ptr<Cell> WhereCanIEat();
-        virtual std::shared_ptr<Insect> GetNewborn(std::shared_ptr<Cell>& cell) = 0;
+        virtual std::shared_ptr<Insect> GetNewborn(const std::shared_ptr<Cell>& cell) = 0;
         virtual std::shared_ptr<Insect> GetThisPtr() = 0;
 
         std::shared_ptr<Cell> cell;
-        bool is_dead = false;
-        bool has_bred_current_round = false;
-        uint32_t rounds_until_breeding;
+        bool is_dead{false};
+        bool has_bred_current_round{false};
+        int rounds_until_breeding;
         //std::shared_ptr<InsectCallbackMetrics> metrics;
         InsectCallbackMetrics metrics;
         // Callback when round finishes.
