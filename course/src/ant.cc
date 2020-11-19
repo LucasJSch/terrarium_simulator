@@ -1,10 +1,17 @@
+#include <iostream>
 #include "insect.h"
 #include "ant.h"
 
 namespace ekumen {
 namespace simulation {
+namespace {
+    constexpr int kRequiredRoundsUntilBreed = 2;
+}
 
 Ant::Ant(const std::shared_ptr<Cell>& cell) {
+    if (!cell) {
+        throw std::invalid_argument("Null pointer passed to Ant constructor.");
+    }
     this->cell = cell;
     cell->Occupy(GetThisPtr());
     metrics.SetInsectType(Ant::GetInsectType());
@@ -17,9 +24,11 @@ InsectType Ant::GetInsectType() {
 
 void Ant::RunRound() {
     if (IsDead()) {
+        std::cout << "ant is dead !!! \n";
         metrics.SetDead();
     }
     else {
+        std::cout << "ant is not dead !!! \n";
         has_bred_current_round = false;
         Breed();
         Move();
@@ -29,7 +38,8 @@ void Ant::RunRound() {
         Breed();
         UpdateBreedingState();
     }
-    if(round_finished_callback) {
+    if (round_finished_callback) {
+        std::cout << "running metrics !!! \n";
         round_finished_callback(metrics);
     }
 }
@@ -43,11 +53,14 @@ std::shared_ptr<Insect> Ant::GetNewborn(const std::shared_ptr<Cell>& cell) {
 }
 
 std::shared_ptr<Cell> Ant::WhereCanIEat() {
+    // Ants don't eat.
     return nullptr;
 }
 
 std::shared_ptr<Insect> Ant::GetThisPtr() {
-    return std::make_shared<Ant>(*this);
+    auto aux = std::make_shared<Ant>(*this);
+    std::cout << "aux: " << aux.get() << "\n";
+    return aux;
 }
 }  // namespace simulation
 }  // namespace ekumen

@@ -10,8 +10,15 @@ namespace ekumen {
 namespace simulation {
 
 void Insect::Die() {
+    if (is_dead) {
+        metrics.SetDead();
+        return;
+    }
+    std::cout << "setting as dead. this class: " << typeid(*this).name() << "\n";
     cell->Free();
     is_dead = true;
+    std::cout << "instance: " << this << "\n";
+    IsDead();
     metrics.SetDead();
 }
 
@@ -43,12 +50,15 @@ void Insect::Move() {
     cell = free_cell;
 }
 
-void Insect::Eat() {
-    std::shared_ptr<Cell> free_cell = WhereCanIEat();
-    if (!free_cell) {
-        return;
+bool Insect::Eat() {
+    std::shared_ptr<Cell> cell = WhereCanIEat();
+    if (!cell) {
+        std::cout << "not eating. " << typeid(*this).name() << "\n";
+        return false;
     }
-    // TODO: implement.
+    std::cout << "eating. " << typeid(*this).name() << "\n";
+    cell->GetInsect()->Die();
+    return true;
 }
 
 bool Insect::CanBreed() {
@@ -65,6 +75,8 @@ bool Insect::CanBreed() {
 }
 
 bool Insect::IsDead() {
+    std::cout << "is_dead = " << is_dead << " class: " << typeid(*this).name() << "\n";
+    std::cout << "instance: " << this << "\n";
     return is_dead;
 }
 
@@ -82,11 +94,11 @@ void Insect::UpdateBreedingState() {
 
 
 std::shared_ptr<Cell> Insect::WhereCanIMove() {
-    return cell->GetRandomFreeCell();
+    return cell->GetRandomFreeSurroundingCell();
 }
 
 std::shared_ptr<Cell> Insect::WhereCanIBreed() {
-    return cell->GetRandomFreeCell();
+    return cell->GetRandomFreeSurroundingCell();
 }
 
 std::shared_ptr<Cell> Insect::WhereCanIEat() {
@@ -97,6 +109,17 @@ std::shared_ptr<Cell> Insect::GetCell() {
     return cell;
 }
 
+/*void Insect::SetCell(const std::shared_ptr<Cell>& cell) {
+    if (!cell) {
+        throw std::invalid_argument("Null pointer passed to Ant constructor.");
+    }
+    // This method only should be called once upon construction.
+    if (this->cell) {
+        throw std::invalid_argument("Null pointer passed to Ant constructor.");
+    }
+    this->cell = cell;
+    cell->Occupy(std::make_shared<Insect>(*this));
+}*/
 
 }  // namespace simulation
 }  // namespace ekumen

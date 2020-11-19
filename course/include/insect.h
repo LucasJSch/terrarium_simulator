@@ -15,21 +15,22 @@ class Cell;
 // and defines the methods that must be implemented by every insect.
 // We need the enable_shared_from_this ineritance to pass the instance's reference when moving
 // to a new cell.
-class Insect {
+class Insect : public std::enable_shared_from_this<Insect>{
     public:
         // Simulates a round.
         virtual void RunRound() = 0;
         void Die();
         void SetRoundResultsCallback(std::function<void(InsectCallbackMetrics&)> callback);
         std::shared_ptr<Cell> GetCell();
+        virtual InsectType GetInsectType() = 0;
+        //void SetCell(const std::shared_ptr<Cell>& cell);
 
     protected:
         // Making these virtual allows to easily change the insect behaviour if
         // needed, or have additional functionalities besides the basic ones.
         virtual void Breed();
         virtual void Move();
-        virtual void Eat();
-        virtual InsectType GetInsectType() = 0;
+        virtual bool Eat();
         virtual uint32_t GetRequiredRoundsToBreed() = 0;
         bool CanBreed();
         bool IsDead();

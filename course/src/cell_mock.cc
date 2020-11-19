@@ -25,7 +25,7 @@ void Cell::SetSurroundingCells(SurroundingCells& surr) {
     this->surrounding_cells = surr;
 }
 
-std::shared_ptr<Cell> Cell::GetRandomFreeCell() {
+std::shared_ptr<Cell> Cell::GetRandomFreeSurroundingCell() {
     std::vector<std::shared_ptr<Cell>> free_cells = surrounding_cells.GetFreeCells();
     if (free_cells.size() == 0) {return nullptr;}
     return free_cells[0];
@@ -40,6 +40,13 @@ SurroundingCells::SurroundingCells(const std::vector<std::shared_ptr<Cell>>& cel
         this->cells.push_back(cell_ptr);
     }
 }
+
+SurroundingCells::SurroundingCells(const std::initializer_list<std::shared_ptr<Cell>>& cells) {
+    for (const std::shared_ptr<Cell>& cell_ptr : cells) {
+        this->cells.push_back(cell_ptr);
+    }
+}
+
 
 std::vector<std::shared_ptr<Cell>> SurroundingCells::GetFreeCells() {
     std::vector<std::shared_ptr<Cell>> vector;
@@ -64,6 +71,7 @@ std::vector<std::shared_ptr<Cell>> SurroundingCells::GetOccupiedCells() {
 std::shared_ptr<Insect> Cell::GetInsect() {
     return insect;
 }
+
 
 }  // namespace ekumen
 }  // namespace simulation

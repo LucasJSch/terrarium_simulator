@@ -18,6 +18,7 @@ set(LIBRARY_SOURCES
 	src/insect.cc
 	src/ant.cc
 	src/cell_mock.cc
+	src/doodlebug.cc
 )
 
 # Library creation.

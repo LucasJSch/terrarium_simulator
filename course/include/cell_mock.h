@@ -17,6 +17,7 @@ class SurroundingCells {
     public:
         SurroundingCells() = default;
         SurroundingCells(const std::vector<std::shared_ptr<Cell>>& cells);
+        SurroundingCells(const std::initializer_list<std::shared_ptr<Cell>>& cells);
         std::vector<std::shared_ptr<Cell>> GetFreeCells();
         std::vector<std::shared_ptr<Cell>> GetOccupiedCells();
         std::vector<std::shared_ptr<Cell>> cells;
@@ -28,7 +29,7 @@ class Cell {
         void Occupy(const std::shared_ptr<Insect>& insect);
         bool IsFree();
         void SetSurroundingCells(SurroundingCells& surr);
-        std::shared_ptr<Cell> GetRandomFreeCell();
+        std::shared_ptr<Cell> GetRandomFreeSurroundingCell();
         SurroundingCells GetSurroundingCells();
         std::shared_ptr<Insect> GetInsect();
 
