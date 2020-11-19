@@ -9,7 +9,7 @@ namespace ekumen {
 namespace simulation {
 
 class Insect;
-enum class InsectType {Ant, Doodlebug};
+enum class InsectType {Undefined, Ant, Doodlebug};
 
 // Class that contains different metrics of a certain insect type.
 // The metrics are only per round.

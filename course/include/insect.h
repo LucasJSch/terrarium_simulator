@@ -22,6 +22,7 @@ class Insect : public std::enable_shared_from_this<Insect>{
         void Die();
         void SetRoundResultsCallback(std::function<void(InsectCallbackMetrics&)> callback);
         std::shared_ptr<Cell> GetCell();
+        virtual InsectType GetInsectType() = 0;
         void SetCell(const std::shared_ptr<Cell>& cell);
 
     protected:
@@ -29,8 +30,7 @@ class Insect : public std::enable_shared_from_this<Insect>{
         // needed, or have additional functionalities besides the basic ones.
         virtual void Breed();
         virtual void Move();
-        virtual void Eat();
-        virtual InsectType GetInsectType() = 0;
+        virtual bool Eat();
         virtual uint32_t GetRequiredRoundsToBreed() = 0;
         bool CanBreed();
         bool IsDead();
