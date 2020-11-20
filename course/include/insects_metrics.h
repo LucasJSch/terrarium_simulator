@@ -20,10 +20,12 @@ class InsectsRoundMetrics {
         void AddNewborn() {n_newborns++;}
         uint32_t GetDeadCount() const {return n_dead;}
         uint32_t GetNewbornCount() const {return n_newborns;}
+        void SetInsectType(InsectType type) {insect_type = type;}
 
     private:
         uint32_t n_dead{0};
         uint32_t n_newborns{0};
+        InsectType insect_type{InsectType::Undefined};
 };
 
 // This class will be used as the return type of the callback when an insect

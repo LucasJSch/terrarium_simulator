@@ -23,6 +23,7 @@ CellMap::CellMap(int rows, int cols) {
             GetCell(i,j) = cell_ptr(new Cell());
         }
     }
+    SetSurroundingCells();
 }
 
 std::shared_ptr<Cell>& CellMap::GetCell(int row, int col) {
@@ -40,5 +41,38 @@ int CellMap::cols() {
     return n_cols;
 }
 
+std::vector<std::pair<int,int>> CellMap::GetSurroundingIndexes(int row, int col) {
+    std::vector<std::pair<int,int>> vector;
+    if ((row + 1 >= 0) && (row + 1 < n_rows)) {
+        vector.push_back(std::pair<int,int>(row + 1, col));
+    }
+    if ((row - 1 >= 0) && (row - 1 < n_rows)) {
+        vector.push_back(std::pair<int,int>(row -1 , col));
+    }
+    if ((col - 1 >= 0) && (col - 1 < n_cols)) {
+        vector.push_back(std::pair<int,int>(row, col - 1));
+    }
+    if ((col + 1 >= 0) && (col + 1 < n_cols)) {
+        vector.push_back(std::pair<int,int>(row, col + 1));
+    }
+    return vector;
+}
+
+void CellMap::SetSurroundingCells() {
+    if (n_rows == 1 && n_cols == 1) {
+        return;
+    }
+    for (int i = 0; i < n_rows; i++) {
+        for (int j = 0; j < n_cols; j++) {
+            std::vector<std::pair<int,int>> indexes = GetSurroundingIndexes(i, j);
+            std::vector<cell_ptr> surr_cells;
+            for (const std::pair<int,int> pair : indexes) {
+                surr_cells.push_back(GetCell(pair.first, pair.second));
+            }
+            SurroundingCells surr = SurroundingCells(surr_cells);
+            GetCell(i, j)->SetSurroundingCells(surr);
+        }
+    }
+}
 }  // namespace simulation
 }  // namespace ekumen
