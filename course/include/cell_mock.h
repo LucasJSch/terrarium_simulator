@@ -28,7 +28,7 @@ class Cell {
         void Free();
         void Occupy(const std::shared_ptr<Insect>& insect);
         bool IsFree();
-        void SetSurroundingCells(SurroundingCells& surr);
+        void SetSurroundingCells(const SurroundingCells& surr);
         std::shared_ptr<Cell> GetRandomFreeSurroundingCell();
         SurroundingCells GetSurroundingCells();
         std::shared_ptr<Insect> GetInsect();

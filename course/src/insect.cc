@@ -12,6 +12,7 @@ namespace simulation {
 void Insect::Die() {
     if (is_dead) {
         metrics.SetDead();
+        round_finished_callback(metrics);
         return;
     }
     std::cout << "setting as dead. this class: " << typeid(*this).name() << "\n";
@@ -20,6 +21,7 @@ void Insect::Die() {
     std::cout << "instance: " << this << "\n";
     IsDead();
     metrics.SetDead();
+    round_finished_callback(metrics);
 }
 
 void Insect::SetRoundResultsCallback(std::function<void(InsectCallbackMetrics&)> callback) {

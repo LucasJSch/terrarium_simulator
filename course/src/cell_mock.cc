@@ -21,7 +21,7 @@ bool Cell::IsFree() {
     return isFree;
 }
 
-void Cell::SetSurroundingCells(SurroundingCells& surr) {
+void Cell::SetSurroundingCells(const SurroundingCells& surr) {
     this->surrounding_cells = surr;
 }
 

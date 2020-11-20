@@ -1,0 +1,56 @@
+#include <iostream>
+
+#include "environment.h"
+
+namespace ekumen {
+namespace simulation {
+
+using insect_ptr = std::shared_ptr<Insect>;
+
+Environment::Environment(int rows, int cols) {
+    cell_map = CellMap(rows, cols);
+}
+
+InsectMetrics Environment::RunRound() {
+    if (!SimulationInitialized()) {
+        InitSimulation();
+    }
+    RandomizeInsectsOrder();
+
+    // TODO: Separate this per bug type.
+    // TODO: Define this as a separate function.
+    InsectMetrics env_metrics;
+    std::vector<Insect> newborns;
+    auto metrics_callback = [&env_metrics, &newborns](InsectCallbackMetrics& metrics) {
+        if (metrics.IsDead()) {
+            env_metrics.AddDead();
+        }
+        if (metrics.HasBred()) {
+            env_metrics.AddNewborn();
+            newborns.push_back(metrics.GetNewborn());
+        }
+    };
+
+    for (const insect_ptr& insect : insects) {
+        insect->RunRound();
+    }
+    // After finishing the original insects we add the newborns to the list.
+    for (const insect_ptr& insect : newborns) {
+        insects.push_back(insect);
+    }
+}
+
+bool Environment::SimulationFinished() {
+    return simulation_finished;
+}
+
+bool Environment::SimulationInitialized() {
+    return simulation_initialized;
+}
+
+void Environment::RandomizeInsectsOrder() {
+    std::random_shuffle(insects.begin(), insects.end());
+}
+
+}  // namespace simulation
+}  // namespace ekumen

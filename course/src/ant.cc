@@ -26,6 +26,9 @@ void Ant::RunRound() {
     if (IsDead()) {
         std::cout << "ant is dead !!! \n";
         metrics.SetDead();
+        // If the ant died we don't want to execute the callback again.
+        // The callback was executed when called Die().
+        return;
     }
     else {
         std::cout << "ant is not dead !!! \n";
