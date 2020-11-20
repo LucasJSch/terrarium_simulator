@@ -19,6 +19,7 @@ set(LIBRARY_SOURCES
 	src/ant.cc
 	src/cell_mock.cc
 	src/doodlebug.cc
+	src/cellmap.cc
 )
 
 # Library creation.
