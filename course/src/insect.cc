@@ -11,11 +11,11 @@ namespace simulation {
 
 void Insect::SetCell(const std::shared_ptr<Cell>& cell) {
     if (!cell) {
-        throw std::invalid_argument("Null pointer passed to SetCell().");
+        throw std::invalid_argument("Null pointer passed to Ant constructor.");
     }
     // This method only should be called once upon construction.
     if (this->cell) {
-        throw std::invalid_argument("Cell already set up before calling SetCell().");
+        throw std::invalid_argument("Null pointer passed to Ant constructor.");
     }
     this->cell = cell;
     cell->Occupy(GetThisPtr());
