@@ -13,7 +13,7 @@ namespace {
 
 class Ant : public Insect {
     public:
-        Ant(const std::shared_ptr<Cell>& cell);
+        Ant();
         void RunRound();
         InsectType GetInsectType();
 

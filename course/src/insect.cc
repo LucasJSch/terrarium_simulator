@@ -9,6 +9,18 @@
 namespace ekumen {
 namespace simulation {
 
+void Insect::SetCell(const std::shared_ptr<Cell>& cell) {
+    if (!cell) {
+        throw std::invalid_argument("Null pointer passed to SetCell().");
+    }
+    // This method only should be called once upon construction.
+    if (this->cell) {
+        throw std::invalid_argument("Cell already set up before calling SetCell().");
+    }
+    this->cell = cell;
+    cell->Occupy(GetThisPtr());
+}
+
 void Insect::Die() {
     cell->Free();
     is_dead = true;

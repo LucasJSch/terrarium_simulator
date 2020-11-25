@@ -4,9 +4,7 @@
 namespace ekumen {
 namespace simulation {
 
-Ant::Ant(const std::shared_ptr<Cell>& cell) {
-    this->cell = cell;
-    cell->Occupy(GetThisPtr());
+Ant::Ant() {
     metrics.SetInsectType(Ant::GetInsectType());
     rounds_until_breeding = GetRequiredRoundsToBreed();
 }
@@ -39,7 +37,9 @@ uint32_t Ant::GetRequiredRoundsToBreed() {
 }
 
 std::shared_ptr<Insect> Ant::GetNewborn(const std::shared_ptr<Cell>& cell) {
-    return std::make_shared<Ant>(cell);
+    auto newborn = std::make_shared<Ant>();
+    newborn->SetCell(cell);
+    return newborn;
 }
 
 std::shared_ptr<Cell> Ant::WhereCanIEat() {
@@ -47,7 +47,7 @@ std::shared_ptr<Cell> Ant::WhereCanIEat() {
 }
 
 std::shared_ptr<Insect> Ant::GetThisPtr() {
-    return std::make_shared<Ant>(*this);
+    return shared_from_this();
 }
 }  // namespace simulation
 }  // namespace ekumen
