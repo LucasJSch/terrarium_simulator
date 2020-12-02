@@ -1,6 +1,6 @@
 #include "cellmap.h"
 #include "ant.h"
-#include "cell_mock.h"
+#include "cell.h"
 
 
 #include <cmath>

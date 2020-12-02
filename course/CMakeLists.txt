@@ -17,7 +17,7 @@ include_directories(
 set(LIBRARY_SOURCES
 	src/insect.cc
 	src/ant.cc
-	src/cell_mock.cc
+	src/cell.cc
 	src/doodlebug.cc
 	src/cellmap.cc
 	src/environment.cc

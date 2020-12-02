@@ -1,9 +1,8 @@
+#include <ctime>
 #include <iostream>
 #include <vector>
 
-#include "cell_mock.h"
-
-// Mock implementation of Cell class to use in unit tests.
+#include "cell.h"
 
 namespace ekumen {
 namespace simulation {
@@ -27,9 +26,11 @@ void Cell::SetSurroundingCells(const SurroundingCells& surr) {
 }
 
 std::shared_ptr<Cell> Cell::GetRandomFreeSurroundingCell() {
+    srand((unsigned) time(0));
     std::vector<std::shared_ptr<Cell>> free_cells = surrounding_cells.GetFreeCells();
     if (free_cells.size() == 0) {return nullptr;}
-    return free_cells[0];
+    int random_index = (rand() % free_cells.size());
+    return free_cells[random_index];
 }
 
 SurroundingCells Cell::GetSurroundingCells() {

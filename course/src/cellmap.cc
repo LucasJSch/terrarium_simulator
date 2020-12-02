@@ -1,7 +1,7 @@
 #include <iostream>
 
 #include "cellmap.h"
-#include "cell_mock.h"
+#include "cell.h"
 
 
 
