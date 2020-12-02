@@ -74,6 +74,9 @@ std::shared_ptr<Insect> Cell::GetInsect() {
     return insect;
 }
 
+std::vector<std::shared_ptr<Cell>> SurroundingCells::GetVectorizedCells() {
+    return cells;
+}
 
 }  // namespace ekumen
 }  // namespace simulation
