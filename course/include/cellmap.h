@@ -1,7 +1,7 @@
 #ifndef CELLMAP_H
 #define	CELLMAP_H
 
-#include "cell_mock.h"
+#include "cell.h"
 
 namespace ekumen {
 namespace simulation {

@@ -2,7 +2,7 @@
 #define	ENVIRONMENT_H
 
 #include "cellmap.h"
-#include "cell_mock.h"
+#include "cell.h"
 #include "insects_metrics.h"
 
 namespace ekumen {

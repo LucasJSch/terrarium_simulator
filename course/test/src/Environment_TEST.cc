@@ -7,7 +7,7 @@
 
 #include "environment.h"
 #include "ant.h"
-#include "cell_mock.h"
+#include "cell.h"
 
 namespace ekumen {
 namespace simulation {
