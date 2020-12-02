@@ -20,6 +20,9 @@ class SurroundingCells {
         SurroundingCells(const std::initializer_list<std::shared_ptr<Cell>>& cells);
         std::vector<std::shared_ptr<Cell>> GetFreeCells();
         std::vector<std::shared_ptr<Cell>> GetOccupiedCells();
+        std::vector<std::shared_ptr<Cell>> GetVectorizedCells();
+
+    private:
         std::vector<std::shared_ptr<Cell>> cells;
 };
 

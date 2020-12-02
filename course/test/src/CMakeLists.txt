@@ -9,6 +9,7 @@ set (GTEST_SOURCES
 	Doodlebug_TEST.cc
 	CellMap_TEST.cc
 	Environment_TEST.cc
+	Cell_TEST.cc
 )
 
 cppcourse_build_tests(${GTEST_SOURCES})
