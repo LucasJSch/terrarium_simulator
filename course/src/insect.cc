@@ -13,17 +13,21 @@ void Insect::SetCell(const std::shared_ptr<Cell>& cell) {
     if (!cell) {
         throw std::invalid_argument("Null pointer passed to SetCell().");
     }
-    // This method only should be called once upon construction.
     if (this->cell) {
-        throw std::invalid_argument("Cell already set up before calling SetCell().");
+        throw std::invalid_argument("Cell already set when called to SetCell().");
     }
     this->cell = cell;
     cell->Occupy(GetThisPtr());
 }
 
 void Insect::Die() {
+    if (is_dead) {
+        metrics.SetDead();
+        return;
+    }
     cell->Free();
     is_dead = true;
+    IsDead();
     metrics.SetDead();
 }
 
@@ -55,12 +59,13 @@ void Insect::Move() {
     cell = free_cell;
 }
 
-void Insect::Eat() {
-    std::shared_ptr<Cell> free_cell = WhereCanIEat();
-    if (!free_cell) {
-        return;
+bool Insect::Eat() {
+    std::shared_ptr<Cell> cell = WhereCanIEat();
+    if (!cell) {
+        return false;
     }
-    // TODO: implement.
+    cell->GetInsect()->Die();
+    return true;
 }
 
 bool Insect::CanBreed() {
@@ -94,11 +99,11 @@ void Insect::UpdateBreedingState() {
 
 
 std::shared_ptr<Cell> Insect::WhereCanIMove() {
-    return cell->GetRandomFreeCell();
+    return cell->GetRandomFreeSurroundingCell();
 }
 
 std::shared_ptr<Cell> Insect::WhereCanIBreed() {
-    return cell->GetRandomFreeCell();
+    return cell->GetRandomFreeSurroundingCell();
 }
 
 std::shared_ptr<Cell> Insect::WhereCanIEat() {
@@ -108,7 +113,5 @@ std::shared_ptr<Cell> Insect::WhereCanIEat() {
 std::shared_ptr<Cell> Insect::GetCell() {
     return cell;
 }
-
-
 }  // namespace simulation
 }  // namespace ekumen

@@ -1,3 +1,4 @@
+#include <iostream>
 #include "insect.h"
 #include "ant.h"
 
@@ -27,7 +28,7 @@ void Ant::RunRound() {
         Breed();
         UpdateBreedingState();
     }
-    if(round_finished_callback) {
+    if (round_finished_callback) {
         round_finished_callback(metrics);
     }
 }
@@ -43,6 +44,7 @@ std::shared_ptr<Insect> Ant::GetNewborn(const std::shared_ptr<Cell>& cell) {
 }
 
 std::shared_ptr<Cell> Ant::WhereCanIEat() {
+    // Ants don't eat.
     return nullptr;
 }
 
