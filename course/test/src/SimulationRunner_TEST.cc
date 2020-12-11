@@ -15,7 +15,8 @@ namespace {
 
 GTEST_TEST(SimulationRunnerTest, NoExceptionsThrownWhenSimulating) {
     // This test just checks that the class can simulate without throwing exceptions.
-    Environment env(5, 5, 5, 5);
+    // It emulates the execution of an e2e usage.
+    Environment env = Environment();
     SimulationRunner simulation_runner(env);
     simulation_runner.RunSimulation();
 }

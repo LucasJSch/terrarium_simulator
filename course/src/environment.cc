@@ -11,10 +11,10 @@
 namespace ekumen {
 namespace simulation {
 namespace {
-    constexpr int kInitialDefaultDoodlebugs = 5;
-    constexpr int kInitialDefaultAnts = 100;
     constexpr int kDefaultCols = 20;
     constexpr int kDefaultRows = 20;
+    constexpr int kDefaultDoodlebugs = 5;
+    constexpr int kDefaultAnts = 100;
 }  // namespace
 
 using insect_ptr = std::shared_ptr<Insect>;
@@ -48,13 +48,19 @@ void RoundResultsCallback(InsectCallbackMetrics& metrics,
     }
 }
 
-Environment::Environment(int rows = kDefaultRows, int cols = kDefaultCols,
-                         int ants = kInitialDefaultAnts,
-                         int doodlebugs = kInitialDefaultDoodlebugs) {
+Environment::Environment() {
+    Initialize(kDefaultRows, kDefaultCols, kDefaultAnts, kDefaultDoodlebugs);
+}
+
+Environment::Environment(int rows, int cols, int ants, int doodlebugs) {
     if (rows * cols < ants + doodlebugs) {
         throw std::invalid_argument("There are more insects than cells.");
     }
-    cell_map = CellMap(rows, cols);
+    Initialize(rows, cols, ants, doodlebugs);
+}
+
+void Environment::Initialize(int rows, int cols, int ants, int doodlebugs) {
+    this->cell_map = CellMap(rows, cols);
     // TODO: This way of assigning is not so good.
     // If we assign n bugs to n cells, the time until
     // we randomly get every cellmap index is going to take eternity approximately.
