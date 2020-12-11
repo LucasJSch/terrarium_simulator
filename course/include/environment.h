@@ -11,10 +11,12 @@ namespace simulation {
 class Environment {
     public:
         Environment(int rows, int cols, int ants, int doodlebugs);
+        Environment();
         std::vector<InsectsRoundMetrics> RunRound();
         bool SimulationFinished();
 
     private:
+        void Initialize(int rows, int cols, int ants, int doodlebugs);
         void RandomizeInsectsOrder();
         CellMap cell_map;
         std::vector<std::shared_ptr<Insect>> insects;
