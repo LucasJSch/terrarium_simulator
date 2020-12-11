@@ -23,12 +23,18 @@ void Insect::SetCell(const std::shared_ptr<Cell>& cell) {
 void Insect::Die() {
     if (is_dead) {
         metrics.SetDead();
+        if (round_finished_callback) {
+            round_finished_callback(metrics);
+        }
         return;
     }
     cell->Free();
     is_dead = true;
     IsDead();
     metrics.SetDead();
+    if (round_finished_callback) {
+        round_finished_callback(metrics);
+    }
 }
 
 void Insect::SetRoundResultsCallback(std::function<void(InsectCallbackMetrics&)> callback) {

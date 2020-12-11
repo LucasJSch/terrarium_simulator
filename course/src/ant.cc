@@ -17,6 +17,9 @@ InsectType Ant::GetInsectType() {
 void Ant::RunRound() {
     if (IsDead()) {
         metrics.SetDead();
+        // If the ant died we don't want to execute the callback again.
+        // The callback was executed when called Die().
+        return;
     }
     else {
         has_bred_current_round = false;

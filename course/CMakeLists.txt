@@ -20,6 +20,7 @@ set(LIBRARY_SOURCES
 	src/cell_mock.cc
 	src/doodlebug.cc
 	src/cellmap.cc
+	src/environment.cc
 )
 
 # Library creation.

@@ -10,6 +10,7 @@ namespace simulation {
 
 void Cell::Free() {
     isFree = true;
+    this->insect = nullptr;
 }
 
 void Cell::Occupy(const std::shared_ptr<Insect>& insect) {
@@ -21,7 +22,7 @@ bool Cell::IsFree() {
     return isFree;
 }
 
-void Cell::SetSurroundingCells(SurroundingCells& surr) {
+void Cell::SetSurroundingCells(const SurroundingCells& surr) {
     this->surrounding_cells = surr;
 }
 
