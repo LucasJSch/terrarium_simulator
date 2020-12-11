@@ -13,14 +13,12 @@ namespace simulation {
 namespace test {
 namespace {
 
-using cell_ptr = std::shared_ptr<Cell>;
-
-GTEST_TEST(SimulationRunnerTest, Test) {
+GTEST_TEST(SimulationRunnerTest, NoExceptionsThrownWhenSimulating) {
+    // This test just checks that the class can simulate without throwing exceptions.
     Environment env(5, 5, 5, 5);
     SimulationRunner simulation_runner(env);
     simulation_runner.RunSimulation();
 }
-
 }  // namespace
 }  // namespace test
 }  // namespace simulation
