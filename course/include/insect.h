@@ -24,6 +24,7 @@ class Insect : public std::enable_shared_from_this<Insect>{
         std::shared_ptr<Cell> GetCell();
         virtual InsectType GetInsectType() = 0;
         void SetCell(const std::shared_ptr<Cell>& cell);
+        bool IsDead();
 
     protected:
         // Making these virtual allows to easily change the insect behaviour if
@@ -33,7 +34,6 @@ class Insect : public std::enable_shared_from_this<Insect>{
         virtual bool Eat();
         virtual uint32_t GetRequiredRoundsToBreed() = 0;
         bool CanBreed();
-        bool IsDead();
         void UpdateBreedingState();
         // Delegates the breeding and moving behaviour to the derived class.
         virtual std::shared_ptr<Cell> WhereCanIMove();
