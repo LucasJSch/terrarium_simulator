@@ -21,6 +21,7 @@ set(LIBRARY_SOURCES
 	src/doodlebug.cc
 	src/cellmap.cc
 	src/environment.cc
+	src/simulation_runner.cc
 )
 
 # Library creation.

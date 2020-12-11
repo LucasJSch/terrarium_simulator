@@ -10,6 +10,7 @@ set (GTEST_SOURCES
 	CellMap_TEST.cc
 	Environment_TEST.cc
 	Cell_TEST.cc
+	SimulationRunner_TEST.cc
 )
 
 cppcourse_build_tests(${GTEST_SOURCES})

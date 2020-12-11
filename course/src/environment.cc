@@ -25,18 +25,18 @@ int GetRandomIntFromZeroTo(int max_limit) {
 }
 
 void RoundResultsCallback(InsectCallbackMetrics& metrics,
-                          InsectsRoundMetrics ant_metrics,
-                          InsectsRoundMetrics doodlebug_metrics,
+                          InsectsRoundMetrics& ant_metrics,
+                          InsectsRoundMetrics& doodlebug_metrics,
                           std::vector<insect_ptr> newborns) {
     // First we check which insect type is calling this funciton.
     InsectsRoundMetrics* env_metrics;
-    ant_metrics = InsectsRoundMetrics();
-    doodlebug_metrics = InsectsRoundMetrics();
     if (metrics.GetInsectType() == InsectType::Ant) {
         env_metrics = &ant_metrics;
     }
-    else {
+    else if (metrics.GetInsectType() == InsectType::Doodlebug) {
         env_metrics = &doodlebug_metrics;
+    } else {
+        throw  std::runtime_error("Uninitialized metrics.");
     }
 
     if (metrics.IsDead()) {
@@ -92,7 +92,9 @@ std::vector<InsectsRoundMetrics> Environment::RunRound() {
 
     std::vector<insect_ptr> newborns;
     InsectsRoundMetrics ant_metrics;
+    ant_metrics.SetInsectType(InsectType::Ant);
     InsectsRoundMetrics doodlebug_metrics;
+    doodlebug_metrics.SetInsectType(InsectType::Doodlebug);
     for (const insect_ptr& insect : insects) {
         insect->SetRoundResultsCallback(std::bind(RoundResultsCallback,
                                                   std::placeholders::_1,
