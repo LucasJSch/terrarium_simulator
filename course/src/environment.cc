@@ -96,8 +96,8 @@ std::vector<InsectsRoundMetrics> Environment::RunRound() {
     for (const insect_ptr& insect : insects) {
         insect->SetRoundResultsCallback(std::bind(RoundResultsCallback,
                                                   std::placeholders::_1,
-                                                  ant_metrics,
-                                                  doodlebug_metrics,
+                                                  std::ref(ant_metrics),
+                                                  std::ref(doodlebug_metrics),
                                                   newborns));
     }
     for (const insect_ptr& insect : insects) {
