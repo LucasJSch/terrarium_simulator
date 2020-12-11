@@ -14,6 +14,21 @@ class CellMap {
         int rows();
         int cols();
 
+
+        friend std::ostream& operator<<(std::ostream& os, CellMap& cellmap) {
+            os << "Cellmap: " << std::endl;
+            for (int i = 0; i < cellmap.rows(); i++) {
+                os << "[";
+                for (int j = 0; j < cellmap.cols(); j++) {
+                    int print_value = !cellmap.GetCell(i, j)->IsFree();
+                    os << "[" << print_value;
+                    os << "]";
+                }
+                os << "]" << std::endl;
+            }
+            return os;
+        }
+
     private:
         // Sets the SurroundingCells for each Cell.
         void SetSurroundingCells();

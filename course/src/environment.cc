@@ -146,5 +146,10 @@ bool Environment::SimulationFinished() {
 void Environment::RandomizeInsectsOrder() {
     std::random_shuffle(insects.begin(), insects.end());
 }
+
+std::shared_ptr<CellMap> Environment::GetCellMap() {
+    return std::make_shared<CellMap>(cell_map);
+}
+
 }  // namespace simulation
 }  // namespace ekumen

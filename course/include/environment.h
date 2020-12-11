@@ -14,6 +14,7 @@ class Environment {
         Environment();
         std::vector<InsectsRoundMetrics> RunRound();
         bool SimulationFinished();
+        std::shared_ptr<CellMap> GetCellMap();
 
     private:
         void Initialize(int rows, int cols, int ants, int doodlebugs);

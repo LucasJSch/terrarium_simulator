@@ -32,6 +32,7 @@ void SimulationRunner::LogRoundResults(std::vector<InsectsRoundMetrics> metrics)
         }
         LogToOutputFile(metric);
     }
+    std::cout << *(env.GetCellMap());
 }
 
 void SimulationRunner::LogToOutputFile(const std::string& str) {
