@@ -23,6 +23,7 @@ class InsectsRoundMetrics {
         uint32_t GetDeadCount() const {return n_dead;}
         uint32_t GetNewbornCount() const {return n_newborns;}
         void SetInsectType(InsectType type) {insect_type = type;}
+        InsectType GetInsectType() const {return insect_type;}
 
         friend std::ostream& operator<<(std::ostream& os, const InsectsRoundMetrics& metrics) {
             os << "Newborn count: " << metrics.GetDeadCount() << std::endl;
