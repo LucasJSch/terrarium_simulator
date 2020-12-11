@@ -1,5 +1,6 @@
 #include <ctime>
 #include <iostream>
+#include <fstream>
 #include <vector>
 
 #include "simulation_runner.h"
@@ -21,16 +22,31 @@ std::vector<InsectsRoundMetrics> SimulationRunner::RunRound() {
 
 void SimulationRunner::LogRoundResults(std::vector<InsectsRoundMetrics> metrics) {
     for (const InsectsRoundMetrics& metric: metrics) {
-        // TODO: Log this to the configured file.
         if (metric.GetInsectType() == InsectType::Ant) {
-            std::cout << "Ants statistics:" << std::endl;
+            LogToOutputFile("Ants statistics:\n");
         }
         else if (metric.GetInsectType() == InsectType::Doodlebug){
-            std::cout << "Doodlebugs statistics:" << std::endl;
+            LogToOutputFile("Doodlebugs statistics:\n");
         } else {
             throw std::runtime_error("Undefined insect type metrics.");
         }
-        std::cout << metric;
+        LogToOutputFile(metric);
+    }
+}
+
+void SimulationRunner::LogToOutputFile(const std::string& str) {
+    if (log_file.empty()) {
+        std::cout << str;
+    } else {
+        log_file_stream << str;
+    }
+}
+
+void SimulationRunner::LogToOutputFile(const InsectsRoundMetrics& metrics) {
+    if (log_file.empty()) {
+        std::cout << metrics;
+    } else {
+        log_file_stream << metrics;
     }
 }
 
