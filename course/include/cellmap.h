@@ -14,6 +14,25 @@ class CellMap {
         int rows();
         int cols();
 
+        friend std::ostream& operator<<(std::ostream& os, CellMap& cellmap) {
+            os << "Cellmap: " << std::endl;
+            for (int i = 0; i < cellmap.rows(); i++) {
+                os << "[";
+                for (int j = 0; j < cellmap.cols(); j++) {
+                    char print_value;
+                    if (cellmap.GetCell(i, j)->IsFree()) {
+                        print_value = '0';
+                    } else {
+                        print_value = InsectTypeToChar(cellmap.GetCell(i, j)->GetInsect()->GetInsectType());
+                    }
+                    os << "[" << print_value;
+                    os << "]";
+                }
+                os << "]" << std::endl;
+            }
+            return os;
+        }
+
     private:
         // Sets the SurroundingCells for each Cell.
         void SetSurroundingCells();
