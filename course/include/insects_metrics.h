@@ -13,6 +13,27 @@ namespace simulation {
 class Insect;
 enum class InsectType {Undefined, Ant, Doodlebug};
 
+namespace {
+std::string InsectTypeToString(InsectType type) {
+    if (type == InsectType::Ant) {
+        return std::string("Ant");
+    }
+    if (type == InsectType::Doodlebug) {
+        return std::string("Doodlebug");
+        }
+    return std::string("Undefined");
+    }
+
+char InsectTypeToChar(InsectType type) {
+    if (type == InsectType::Ant) {
+        return 'A';
+    }
+    if (type == InsectType::Doodlebug) {
+        return 'D';
+    }
+    return 'U';
+}
+}  // namespace
 // Class that contains different metrics of a certain insect type.
 // The metrics are only per round.
 // This class will be used by the simulation runner to log the round statistics.
