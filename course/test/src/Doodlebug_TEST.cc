@@ -7,7 +7,7 @@
 
 #include "doodlebug.h"
 #include "ant.h"
-#include "cell_mock.h"
+#include "cell.h"
 
 namespace ekumen {
 namespace simulation {
@@ -118,7 +118,7 @@ GTEST_TEST(DoodlebugTest, BreedAfter8RoundsNotBefore) {
   SurroundingCells surr = {cell_ptr(new Cell()), cell_ptr(new Cell()),
                            cell_ptr(new Cell()), cell_ptr(new Cell())};
   SurroundingCells surr2 = {cell};
-  for (const cell_ptr& surr_cell : surr.cells) {
+  for (const cell_ptr& surr_cell : surr.GetVectorizedCells()) {
     surr_cell->SetSurroundingCells(surr2);
   }
 

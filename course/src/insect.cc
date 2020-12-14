@@ -2,7 +2,7 @@
 #include <functional>
 #include <memory>
 
-#include "cell_mock.h"
+#include "cell.h"
 #include "insect.h"
 #include "insects_metrics.h"
 
