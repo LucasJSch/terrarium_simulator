@@ -1,6 +1,8 @@
 #ifndef ENVIRONMENT_H
 #define	ENVIRONMENT_H
 
+#include <string>
+
 #include "cellmap.h"
 #include "cell.h"
 #include "insects_metrics.h"
@@ -14,6 +16,7 @@ class Environment {
         Environment();
         std::vector<InsectsRoundMetrics> RunRound();
         bool SimulationFinished();
+        InsectType WhichInsectSurvived();
 
     private:
         void Initialize(int rows, int cols, int ants, int doodlebugs);

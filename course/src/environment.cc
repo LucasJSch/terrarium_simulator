@@ -146,5 +146,16 @@ bool Environment::SimulationFinished() {
 void Environment::RandomizeInsectsOrder() {
     std::random_shuffle(insects.begin(), insects.end());
 }
+
+InsectType Environment::WhichInsectSurvived() {
+    if (SimulationFinished()) {
+        for (const insect_ptr& insect : insects) {
+            if (!insect->IsDead()) {
+                return insect->GetInsectType();
+            }
+        }
+    }
+    return InsectType::Undefined;
+}
 }  // namespace simulation
 }  // namespace ekumen

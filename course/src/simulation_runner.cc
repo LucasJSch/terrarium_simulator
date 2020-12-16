@@ -14,6 +14,9 @@ void SimulationRunner::RunSimulation() {
         metrics = RunRound();
         LogRoundResults(metrics);
     }
+    LogToOutputFile("The winner is: ");
+    LogToOutputFile(InsectTypeToString(env.WhichInsectSurvived()));
+    LogToOutputFile("\n");
 }
 
 std::vector<InsectsRoundMetrics> SimulationRunner::RunRound() {
@@ -22,14 +25,6 @@ std::vector<InsectsRoundMetrics> SimulationRunner::RunRound() {
 
 void SimulationRunner::LogRoundResults(std::vector<InsectsRoundMetrics> metrics) {
     for (const InsectsRoundMetrics& metric: metrics) {
-        if (metric.GetInsectType() == InsectType::Ant) {
-            LogToOutputFile("Ants statistics:\n");
-        }
-        else if (metric.GetInsectType() == InsectType::Doodlebug){
-            LogToOutputFile("Doodlebugs statistics:\n");
-        } else {
-            throw std::runtime_error("Undefined insect type metrics.");
-        }
         LogToOutputFile(metric);
     }
 }
