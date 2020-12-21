@@ -1,5 +1,5 @@
 #ifndef SIMULATION_RUNNER_H
-#define	SIMULATION_RUNNER_H
+#define SIMULATION_RUNNER_H
 
 #include <fstream>
 #include <memory>
