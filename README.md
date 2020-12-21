@@ -36,3 +36,16 @@ cmake ..
 make
 ctest
 ```
+
+## Building and running the main app
+
+The exact same steps for the last section can be followed to compile the main app.
+The current name for it is 'cpp_course'.
+
+To execute it, follow the steps:
+
+```
+cd {REPO_PATH}/course/build
+cd {REPO_PATH}/course
+./cpp_course
+```
