@@ -67,7 +67,7 @@ GTEST_TEST(EnvironmentTest, SimulationFinishedWhenTheDoodlebugEatsTheAntAndThere
     std::vector<InsectsRoundMetrics> metrics = env.RunRound();
     for (const InsectsRoundMetrics metric : metrics ) {
         if (metric.GetInsectType() == InsectType::Ant) {
-            EXPECT_EQ(metric.GetDeadCount(), (unsigned)1);
+            EXPECT_EQ(metric.GetDeadCount(), 1u);
         }
     }
     EXPECT_TRUE(env.SimulationFinished());
