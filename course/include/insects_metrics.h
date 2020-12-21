@@ -1,7 +1,9 @@
 #ifndef INSECTS_METRICS_H
 #define	INSECTS_METRICS_H
+
 #include <cstdint>
 #include <memory>
+#include <ostream>
 
 #include "insect.h"
 
@@ -10,6 +12,30 @@ namespace simulation {
 
 class Insect;
 enum class InsectType {Undefined, Ant, Doodlebug};
+
+namespace {
+std::string InsectTypeToString(InsectType type) {
+    switch(type) {
+        case InsectType::Ant:
+            return std::string("Ant");
+        case InsectType::Doodlebug:
+            return std::string("Doodlebug");
+        default:
+            return std::string("Undefined");
+    }
+}
+
+char InsectTypeToChar(InsectType type) {
+    switch(type) {
+        case InsectType::Ant:
+            return 'A';
+        case InsectType::Doodlebug:
+            return 'D';
+        default:
+            return 'U';
+    }
+}
+}  // namespace
 
 // Class that contains different metrics of a certain insect type.
 // The metrics are only per round.
@@ -21,6 +47,14 @@ class InsectsRoundMetrics {
         uint32_t GetDeadCount() const {return n_dead;}
         uint32_t GetNewbornCount() const {return n_newborns;}
         void SetInsectType(InsectType type) {insect_type = type;}
+        InsectType GetInsectType() const {return insect_type;}
+
+        friend std::ostream& operator<<(std::ostream& os, const InsectsRoundMetrics& metrics) {
+            os << "Insect type: " << InsectTypeToString(metrics.GetInsectType()) << std::endl;
+            os << "Newborn count: " << metrics.GetDeadCount() << std::endl;
+            os << "Dead count: " << metrics.GetNewbornCount() << std::endl;
+            return os;
+        }
 
     private:
         uint32_t n_dead{0};

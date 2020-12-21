@@ -11,10 +11,10 @@
 namespace ekumen {
 namespace simulation {
 namespace {
-    constexpr int kInitialDefaultDoodlebugs = 5;
-    constexpr int kInitialDefaultAnts = 100;
     constexpr int kDefaultCols = 20;
     constexpr int kDefaultRows = 20;
+    constexpr int kDefaultDoodlebugs = 5;
+    constexpr int kDefaultAnts = 100;
 }  // namespace
 
 using insect_ptr = std::shared_ptr<Insect>;
@@ -25,18 +25,18 @@ int GetRandomIntFromZeroTo(int max_limit) {
 }
 
 void RoundResultsCallback(InsectCallbackMetrics& metrics,
-                          InsectsRoundMetrics ant_metrics,
-                          InsectsRoundMetrics doodlebug_metrics,
+                          InsectsRoundMetrics& ant_metrics,
+                          InsectsRoundMetrics& doodlebug_metrics,
                           std::vector<insect_ptr> newborns) {
     // First we check which insect type is calling this funciton.
     InsectsRoundMetrics* env_metrics;
-    ant_metrics = InsectsRoundMetrics();
-    doodlebug_metrics = InsectsRoundMetrics();
     if (metrics.GetInsectType() == InsectType::Ant) {
         env_metrics = &ant_metrics;
     }
-    else {
+    else if (metrics.GetInsectType() == InsectType::Doodlebug) {
         env_metrics = &doodlebug_metrics;
+    } else {
+        throw  std::runtime_error("Uninitialized metrics.");
     }
 
     if (metrics.IsDead()) {
@@ -48,13 +48,19 @@ void RoundResultsCallback(InsectCallbackMetrics& metrics,
     }
 }
 
-Environment::Environment(int rows = kDefaultRows, int cols = kDefaultCols,
-                         int ants = kInitialDefaultAnts,
-                         int doodlebugs = kInitialDefaultDoodlebugs) {
+Environment::Environment() {
+    Initialize(kDefaultRows, kDefaultCols, kDefaultAnts, kDefaultDoodlebugs);
+}
+
+Environment::Environment(int rows, int cols, int ants, int doodlebugs) {
     if (rows * cols < ants + doodlebugs) {
         throw std::invalid_argument("There are more insects than cells.");
     }
-    cell_map = CellMap(rows, cols);
+    Initialize(rows, cols, ants, doodlebugs);
+}
+
+void Environment::Initialize(int rows, int cols, int ants, int doodlebugs) {
+    this->cell_map = CellMap(rows, cols);
     // TODO: This way of assigning is not so good.
     // If we assign n bugs to n cells, the time until
     // we randomly get every cellmap index is going to take eternity approximately.
@@ -92,12 +98,14 @@ std::vector<InsectsRoundMetrics> Environment::RunRound() {
 
     std::vector<insect_ptr> newborns;
     InsectsRoundMetrics ant_metrics;
+    ant_metrics.SetInsectType(InsectType::Ant);
     InsectsRoundMetrics doodlebug_metrics;
+    doodlebug_metrics.SetInsectType(InsectType::Doodlebug);
     for (const insect_ptr& insect : insects) {
         insect->SetRoundResultsCallback(std::bind(RoundResultsCallback,
                                                   std::placeholders::_1,
-                                                  ant_metrics,
-                                                  doodlebug_metrics,
+                                                  std::ref(ant_metrics),
+                                                  std::ref(doodlebug_metrics),
                                                   newborns));
     }
     for (const insect_ptr& insect : insects) {
@@ -137,6 +145,17 @@ bool Environment::SimulationFinished() {
 
 void Environment::RandomizeInsectsOrder() {
     std::random_shuffle(insects.begin(), insects.end());
+}
+
+InsectType Environment::WhichInsectSurvived() {
+    if (SimulationFinished()) {
+        for (const insect_ptr& insect : insects) {
+            if (!insect->IsDead()) {
+                return insect->GetInsectType();
+            }
+        }
+    }
+    return InsectType::Undefined;
 }
 }  // namespace simulation
 }  // namespace ekumen
